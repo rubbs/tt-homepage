@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+
+    <filter>
+        <filter-name>HandleHerren1Mail</filter-name>
+        <filter-class>de.rubbs.sfgtt.mail.HandleHerren1Mail</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HandleHerren1Mail</filter-name>
+        <url-pattern>/_ah/mail/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>HandleHerren2Mail</filter-name>
+        <filter-class>de.rubbs.sfgtt.mail.HandleHerren2Mail</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HandleHerren2Mail</filter-name>
+        <url-pattern>/_ah/mail/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>HandleHerren3Mail</filter-name>
+        <filter-class>de.rubbs.sfgtt.mail.HandleHerren3Mail</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HandleHerren3Mail</filter-name>
+        <url-pattern>/_ah/mail/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>HandleAbteilungsratMail</filter-name>
+        <filter-class>de.rubbs.sfgtt.mail.HandleAbteilungsratMail</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HandleAbteilungsratMail</filter-name>
+        <url-pattern>/_ah/mail/*</url-pattern>
+    </filter-mapping>
+
+
+</web-app>

@@ -1,0 +1,19 @@
+<md-content >
+  <md-card>
+      <md-card-content>
+        <h2>Unsere Trainingszeiten sind wie folgt:</h2>
+          <table class="training">
+            <tr>
+              <th>Wochentag</th>
+              <th>Ort</th>
+              <th>Uhrzeit</th>
+            </tr>
+            <tr ng-repeat="training in trainings">
+              <td>{{training.tag}}</td>
+              <td>{{training.ort}}</td>
+              <td>{{training.uhrzeit}}</td>
+            </tr>
+          </table>
+      </md-card-content>
+    </md-card>
+  </md-content>
