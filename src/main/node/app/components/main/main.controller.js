@@ -9,5 +9,5 @@
  */
 angular.module('app.main')
   .controller('MainCtrl', function () {
-
+console.log('main');
   });

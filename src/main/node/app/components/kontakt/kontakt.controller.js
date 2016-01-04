@@ -12,15 +12,15 @@ angular.module('app.kontakt')
     $scope.onSend = function(){
       // parse text out of textarea
 
-      var text = angular.element("#message");
+      var text = angular.element('#message');
 
       var message = {
         user: ' ' + $scope.user,
         msg: ' ' + text.val()
-      }
+      };
 
       kontakt.save(message, function(){
-        console.log("success");
+        console.log('success');
         var dialog = ngDialog.open({
           template: '<p>Email gesendet!</p>',
           plain: true
@@ -31,7 +31,7 @@ angular.module('app.kontakt')
           dialog.close();
           text.val('');
         $scope.user = '';
-        }, 2000)
+      }, 2000);
       });
-    }
+    };
   }]);

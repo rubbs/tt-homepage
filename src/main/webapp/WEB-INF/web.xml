@@ -2,6 +2,24 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 
+    <servlet>
+        <servlet-name>mail</servlet-name>
+        <servlet-class>de.rubbs.sfgtt.MailAddressServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>mail</servlet-name>
+        <url-pattern>/mail</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>matches</servlet-name>
+        <servlet-class>de.rubbs.sfgtt.matches.MatchesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>matches</servlet-name>
+        <url-pattern>/matches</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>HandleHerren1Mail</filter-name>
         <filter-class>de.rubbs.sfgtt.mail.HandleHerren1Mail</filter-class>

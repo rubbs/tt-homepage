@@ -13,7 +13,7 @@ angular
     'ngAnimate',
     'ngCookies',
     'ngResource',
-    'ngRoute',
+    'ui.router',
     'ngSanitize',
     'ngTouch',
     'ngMaterial',
@@ -23,5 +23,7 @@ angular
     'app.kontakt',
     'app.main',
     'app.spielplan',
-    'app.training'
+    'app.training',
+    'app.mail',
+    'app.impressum'
   ]);

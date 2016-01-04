@@ -1,6 +1,7 @@
 package de.rubbs.sfgtt.mail;
 
 import com.google.appengine.api.utils.SystemProperty;
+import de.rubbs.sfgtt.db.Player;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.mail.*;
@@ -29,40 +30,23 @@ public class HandleHerren1Mail extends MailHandlerBase {
 
         MimeMessage rcvMsg = getMessageFromRequest(req);
         log.info("Mail to Herren 1 from " );
-
         for(Address f : rcvMsg.getFrom()){
             log.info(f.toString());
         }
 
-        // read content
-        ParseResultDTO result = getText(rcvMsg);
-        log.debug("content  " +  result.getContent());
-
         ///
         // send message
         ///
+        MimeMessage msgToSend = prepareSendMessage(rcvMsg);
+        msgToSend.addRecipient(Message.RecipientType.BCC, new InternetAddress("schwarzruben+herren1@gmail.com"));
 
-//        Properties properties = new Properties();
-//        Session session = Session.getDefaultInstance(properties);
-//
-//        MimeMessage msgToSend = new MimeMessage(session);
-//        msgToSend.setFrom(new InternetAddress("no-reply@" + SystemProperty.applicationId.get() + ".appspotmail.com"));
-//
-//        msgToSend.setSubject(rcvMsg.getSubject());
-//        msgToSend.addRecipient(Message.RecipientType.TO, rcvMsg.getFrom()[0]);
-//        msgToSend.addRecipient(Message.RecipientType.BCC, new InternetAddress("schwarzruben+herren1@gmail.com"));
-//        msgToSend.setReplyTo(rcvMsg.getFrom());
-//
-//        //TODO load players
-//
-//        if(result.isHtml()) {
-//            msgToSend.setText(result.getContent(), "utf-8", "html");
-//        }
-//        else{
-//            msgToSend.setText(result.getContent());
-//        }
-//
-//        Transport.send(msgToSend);
+
+        //TODO load players
+        for(Player p : Util.getHerren1()) {
+            msgToSend.addRecipient(Message.RecipientType.CC, new InternetAddress(p.getEmail()));
+        }
+
+        Transport.send(msgToSend);
         return true;
     }
 

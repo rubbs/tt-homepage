@@ -1,3 +1,4 @@
+/*global jsPDF:false */
 'use strict';
 
 /**
@@ -18,7 +19,6 @@ angular.module('app.spielplan')
         match.end = new Date(match.date);
         match.end.setHours(match.end.getHours() + 3);
     }
-
   });
 
   console.log('$scope.spielplan', $scope.spielplan);
@@ -69,10 +69,7 @@ angular.module('app.spielplan')
     pdf.line(10, 30, 200, 30);
 
 
-
-
     // iterate over matches
-
     var y = 40;
     var lineHeight = 8;
     var matchesPerPage = 30;
@@ -85,7 +82,7 @@ angular.module('app.spielplan')
         // check if new page is neccessary
         console.log(m > 0, m % matchesPerPage );
         if(m % matchesPerPage === 0 && m > 0){
-            console.log("new page");
+            console.log('new page');
             pdf.addPage();
         }
 
@@ -123,4 +120,33 @@ angular.module('app.spielplan')
 
   };
 
-  }]);
+  }])
+
+  .controller('UploadCtrl', ['$scope', '$http', function ($scope, $http) {
+      $scope.onSubmit = function () {
+      	console.log('file name', $scope.filename);
+
+
+      	if($scope.filename){
+      		console.log(JSON.stringify($scope.filename));
+
+      		var formData = new FormData();
+
+                  formData.append('file', $scope.filename);
+                  console.log(formData);
+                  $http(
+                        {
+                              method: 'POST',
+                              url: '/matches',
+                              data: formData,
+                              headers: {'Content-Type': undefined},
+                              transformRequest: angular.identity
+                        })
+                  .success(function() {
+                        console.log('upload success');
+                  });
+      	}
+
+
+      };
+    }]);

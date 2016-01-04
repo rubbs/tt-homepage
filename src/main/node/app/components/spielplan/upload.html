@@ -1,0 +1,17 @@
+<md-content >
+	<div layout="row">
+		<div flex></div>
+		<div flex="50">
+			<md-card>
+				<md-card-content>
+					<form action="/upload" method="post" enctype="multipart/form-data">
+						<input id="file-pdf" type="file" name="file">
+						<input type="submit" value="Submit">
+						<!-- <md-button class="md-raised md-primary" ng-click="onSubmit()">submit</md-button> -->
+					</form>
+				</md-card-content>
+			</md-card>
+		</div>
+		<div flex></div>
+	</div>
+</md-content>

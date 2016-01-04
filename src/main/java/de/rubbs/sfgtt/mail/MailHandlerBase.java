@@ -1,11 +1,11 @@
 package de.rubbs.sfgtt.mail;
 
+import com.google.appengine.api.utils.SystemProperty;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Part;
-import javax.mail.Session;
+import javax.mail.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -142,6 +142,30 @@ public abstract class MailHandlerBase implements Filter {
         }
 
         return null;
+    }
+
+    protected MimeMessage prepareSendMessage(MimeMessage rcvMsg) throws MessagingException, IOException {
+        Properties properties = new Properties();
+        Session session = Session.getDefaultInstance(properties);
+
+        MimeMessage msgToSend = new MimeMessage(session);
+        msgToSend.setFrom(new InternetAddress("no-reply@" + SystemProperty.applicationId.get() + ".appspotmail.com"));
+
+        msgToSend.setSubject(rcvMsg.getSubject());
+        msgToSend.addRecipient(Message.RecipientType.TO, rcvMsg.getFrom()[0]);
+        msgToSend.setReplyTo(rcvMsg.getFrom());
+
+        // read content
+        ParseResultDTO result = getText(rcvMsg);
+        log.debug("content  " +  result.getContent());
+        if(result.isHtml()) {
+            msgToSend.setText(result.getContent(), "utf-8", "html");
+        }
+        else{
+            msgToSend.setText(result.getContent());
+        }
+
+        return msgToSend;
     }
 
 
