@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+    <servlet>
+        <servlet-name>cal</servlet-name>
+        <servlet-class>de.rubbs.sfgtt.calendar.CalendarServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>cal</servlet-name>
+        <url-pattern>/cal</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>mail</servlet-name>
@@ -8,7 +16,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>mail</servlet-name>
-        <url-pattern>/mail</url-pattern>
+        <url-pattern>/api/mail</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -17,7 +25,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>matches</servlet-name>
-        <url-pattern>/matches</url-pattern>
+        <url-pattern>/api/matches</url-pattern>
     </servlet-mapping>
 
     <filter>
@@ -57,4 +65,23 @@
     </filter-mapping>
 
 
+    <!--objectify filter-->
+    <filter>
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- xorigin filter for testing -->
+    <filter>
+        <filter-name>x-origin-filter</filter-name>
+        <filter-class>de.rubbs.sfgtt.appengine.XOriginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>x-origin-filter</filter-name>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
 </web-app>

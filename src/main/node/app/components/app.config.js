@@ -7,7 +7,16 @@ angular.module('nodeApp')
   $urlRouterProvider.otherwise('/');
 
   // $locationProvider.html5Mode(true);
-});
+})
+.constant('BaseUrl', (function(){
+  if (document.location.hostname === 'localhost'){
+    return 'http://localhost:8080';
+  }
+    else {
+      return '';
+    }
+  })()
+);
 // .config(function ($routeProvider) {
 //   $routeProvider
 //     .when('/', {

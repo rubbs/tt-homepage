@@ -2,11 +2,11 @@
   'use strict';
 
   angular.module('app.spielplan')
-  .factory('spielplan', ['$resource', function ($resource) {
+  .factory('spielplan', ['$resource', 'BaseUrl', function ($resource, BaseUrl) {
     // Service logic
     // ...
     return $resource(
-      '/matches'
+      BaseUrl + '/api/matches'
     );
 
   }])
