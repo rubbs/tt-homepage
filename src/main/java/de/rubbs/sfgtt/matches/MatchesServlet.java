@@ -41,7 +41,7 @@ public class MatchesServlet extends HttpServlet {
 
             //TODO parse file
             BlobstoreInputStream is = new BlobstoreInputStream(blobKey);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "ISO-8859-15"));
             CSVReader csvReader = new CSVReader(bufferedReader, ';');
 
             // read headline
