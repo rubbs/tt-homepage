@@ -9,10 +9,8 @@
 * Controller of the homepageSfgTtApp
 */
 angular.module('app.spielplan')
-.controller('SpielplanCtrl', ['$scope', '$filter', 'spielplan', function ($scope, $filter, spielplan) {
+.controller('SpielplanCtrl', ['$scope', '$filter', '$timeout', 'spielplan', function ($scope, $filter, $timeout, spielplan) {
   $scope.spielplan = spielplan.query(function(){
-    console.log('spielplan loaded', $scope.spielplan);
-
     // for (var m in $scope.spielplan){
     //   var match = $scope.spielplan[m];
     //   console.log(match);
@@ -22,9 +20,15 @@ angular.module('app.spielplan')
     // }
   });
 
-  console.log('$scope.spielplan', $scope.spielplan);
-
-  console.log($scope.spielplan);
+  $scope.matchClass = function(match){
+    console.log(match);
+    if(match.date < Date.now()){
+      return 'gray';
+    }
+    else {
+      return 'green';
+    }
+  };
 
   $scope.teamFilterFunction = function(element){
     if($scope.team.name === 'Alle'){

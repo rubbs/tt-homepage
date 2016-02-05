@@ -15,17 +15,21 @@
 -->
   </md-card-content>
 </md-card>
+{{actDate | date}}
 <md-card>
   <md-card-content>
 
-    <md-list>
-        <md-list-item class="md-3-line" ng-repeat="spiel in spielplan | orderBy: 'date' | homeMatch : home">
-          <img src="/images/sfg-logo.jpg" class="md-avatar" alt="{{item.who}}"/>
-          <div class="md-list-item-text">
-            <h4>{{spiel.date | date:'dd.MM.yy HH:mm'}}</h4>
-            <h3>{{spiel.home.name}} {{spiel.home.number | roman}} - {{spiel.away.name}} {{spiel.away.number | roman}} {{spiel.home.points}}:{{spiel.away.points}}</h3>
-            <p>{{spiel.age}}</p>
-          </div>
+    <md-list id="spielplan">
+        <md-list-item class="md-3-line" ng-class="matchClass(spiel)" ng-repeat="spiel in spielplan | orderBy: 'date' | homeMatch : home">
+
+            <!-- <div ng-show="actDate > spiel.date">current</div> -->
+            <img src="/images/sfg-logo.jpg" class="md-avatar" alt="{{item.who}}"/>
+            <div class="md-list-item-text">
+              <h4>{{spiel.date | date:'dd.MM.yy HH:mm'}}</h4>
+              <h3>{{spiel.home.name}} {{spiel.home.number | roman}} - {{spiel.away.name}} {{spiel.away.number | roman}} {{spiel.home.points}}:{{spiel.away.points}}</h3>
+              <p>{{spiel.age}}</p>
+            </div>
+
         </md-list-item>
     </md-list>
   </md-card-content>
