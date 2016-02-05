@@ -3,9 +3,14 @@
   'use strict';
 
 angular.module('nodeApp')
-.config(function($stateProvider, $urlRouterProvider){
+.config(function($stateProvider, $urlRouterProvider, $mdThemingProvider){
   $urlRouterProvider.otherwise('/');
 
+  // configure color theme
+
+  $mdThemingProvider.theme('default')
+    .primaryPalette('lime')
+    .accentPalette('orange');
   // $locationProvider.html5Mode(true);
 });
 // .config(function ($routeProvider) {

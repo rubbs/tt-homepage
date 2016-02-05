@@ -17,13 +17,14 @@
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
 </head>
-<body ng-app="nodeApp">
+<body ng-app="nodeApp" layout="column">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
 <![endif]-->
 
 <!-- Add your site or application content here -->
+
 <md-toolbar>
   <h2 class="md-toolbar-tools">
     <span>SfG Tischtennis</span>
@@ -31,15 +32,14 @@
     <md-button href="/#/">Home</md-button>
     <md-button href="/#spielplan">Spielplan</md-button>
     <md-button href="/#training">Training</md-button>
-    <!--<md-button href="/#augsburg2015">Augsburg 2015</md-button>-->
     <md-button href="/#kontakt">Kontakt</md-button>
     <md-button href="/#impressum">Impressum</md-button>
   </h2>
 </md-toolbar>
 
-
-<div ui-view=""></div>
-
+<md-content>
+  <div ui-view=""></div>
+<md-content>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>
