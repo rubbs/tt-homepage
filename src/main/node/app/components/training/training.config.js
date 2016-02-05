@@ -6,8 +6,7 @@ angular.module('app.training')
   $stateProvider
   .state('training', {
     url: '/training',
-    templateUrl: 'components/training/training.html',
-    controller: 'TrainingCtrl'
+    templateUrl: 'components/training/training.html'
   });
 });
 

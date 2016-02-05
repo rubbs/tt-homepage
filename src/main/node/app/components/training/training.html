@@ -1,19 +1,60 @@
 <md-content >
-  <md-card>
-      <md-card-content>
-        <h2>Unsere Trainingszeiten sind wie folgt:</h2>
+
+  <md-grid-list
+          md-cols-xs="1" md-cols-sm="1" md-cols-md="4" md-cols-gt-md="4"
+          md-row-height-gt-md="3:1" md-row-height="2:1"
+          md-gutter="12px" md-gutter-gt-sm="8px" >
+
+
+          <!-- Winter -->
+      <md-grid-tile class="gray"
+          md-rowspan="2" md-colspan="2" md-colspan-sm="1">
+          <md-grid-tile-header>
+            <h2>September - April</h2>
+          </md-grid-tile-header>
           <table class="training">
             <tr>
               <th>Wochentag</th>
               <th>Ort</th>
               <th>Uhrzeit</th>
             </tr>
-            <tr ng-repeat="training in trainings">
-              <td>{{training.tag}}</td>
-              <td>{{training.ort}}</td>
-              <td>{{training.uhrzeit}}</td>
+            <tr>
+              <td>Dienstag</td>
+              <td>Sporthalle am Wasserturm</td>
+              <td>19:15 - 21:45 Uhr</td>
+            </tr>
+            <tr>
+              <td>Freitag</td>
+              <td>Schulturnhalle</td>
+              <td>18:00 - 21:45 Uhr</td>
             </tr>
           </table>
-      </md-card-content>
-    </md-card>
+      </md-grid-tile>
+
+
+      <!-- Sommer -->
+      <md-grid-tile class="green"
+          md-rowspan="2" md-colspan="2" md-colspan-sm="1">
+          <md-grid-tile-header>
+            <h2>Mai - August</h2>
+          </md-grid-tile-header>
+          <table class="training">
+            <tr>
+              <th>Wochentag</th>
+              <th>Ort</th>
+              <th>Uhrzeit</th>
+            </tr>
+            <tr>
+              <td>Dienstag</td>
+              <td>Sporthalle am Wasserturm</td>
+              <td>19:15 - 21:45 Uhr</td>
+            </tr>
+            <tr>
+              <td>Freitag</td>
+              <td>Schulturnhalle</td>
+              <td>18:00 - 21:45 Uhr</td>
+            </tr>
+          </table>
+      </md-grid-tile>
+    </md-grid-list>
   </md-content>
