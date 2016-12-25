@@ -1,16 +1,18 @@
 package de.rubbs.sfgtt.mail;
 
 import com.google.appengine.api.utils.SystemProperty;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
+import de.rubbs.sfgtt.db.mail.Player;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,7 +45,7 @@ public abstract class MailHandlerBase implements Filter {
      * The Matcher for the pattern can be retrieved via
      * getMatcherFromRequest (e.g. if groups are used in the pattern).
      */
-    protected abstract boolean processMessage(HttpServletRequest req, HttpServletResponse res) throws ServletException, MessagingException, IOException;
+    protected abstract boolean processMessage(HttpServletRequest req, HttpServletResponse res) throws ServletException, MessagingException, IOException, JSONException;
 
     @Override
     public void doFilter(ServletRequest sreq, ServletResponse sres, FilterChain chain)
@@ -62,6 +64,8 @@ public abstract class MailHandlerBase implements Filter {
                 return;
             }
         } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -166,6 +170,35 @@ public abstract class MailHandlerBase implements Filter {
         }
 
         return msgToSend;
+    }
+
+
+    protected void sendgridSend(MimeMessage rcvMsg,  List<Player> recipiants) throws IOException, MessagingException, JSONException {
+// set credentials
+        Sendgrid mail = new Sendgrid();
+
+        ParseResultDTO result = getText(rcvMsg);
+
+        // set email data
+        mail.setFrom(rcvMsg.getFrom()[0].toString());
+        mail.addTo(rcvMsg.getFrom()[0].toString());
+        mail.setSubject(rcvMsg.getSubject());
+        if(result.isHtml()) {
+            mail.setHtml(result.getContent());
+            mail.setText("");
+        }
+        else
+            mail.setText(result.getContent());
+
+        for(Player p : recipiants) {
+            mail.addTo(p.getEmail());
+            log.info("email goes to " + p.getEmail());
+        }
+
+        //mail.setTo("ruben+sendgrid@schwarzpost.de").setFrom("schwarzruben@gmail.com").setSubject("Subject goes here").setText("Hello World!").setHtml("<strong>Hello World!</strong>");
+
+        // send your message
+        mail.send();
     }
 
 

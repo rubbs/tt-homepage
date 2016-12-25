@@ -15,7 +15,6 @@ angular
     'ngResource',
     'ui.router',
     'ngSanitize',
-    'ngTouch',
     'ngMaterial',
     /*
     app specific

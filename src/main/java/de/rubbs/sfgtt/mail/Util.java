@@ -1,6 +1,12 @@
 package de.rubbs.sfgtt.mail;
 
-import de.rubbs.sfgtt.db.Player;
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.util.Closeable;
+import de.rubbs.sfgtt.db.OfyService;
+import de.rubbs.sfgtt.db.mail.MailList;
+import de.rubbs.sfgtt.db.mail.Player;
+import de.rubbs.sfgtt.mail.api.SfgTTApi;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,78 +14,127 @@ import java.util.List;
 /**
  * Created by ruben on 29.11.15.
  */
+@Slf4j
 public class Util {
 
-    public static List<Player> getHerren1() {
+    public static List<Player> getList(String list){
+        // load list
+        Closeable session;
+        session = ObjectifyService.begin();
+        List<MailList> lists = OfyService.ofy().load().type(MailList.class).filter("name =", list).list();
+        if(lists == null || lists.size() != 1){
+            log.error("loading list " + list + " failed");
+            return null;
+        }
+
+        MailList actList = lists.get(0);
+
+        List<Player> players = actList.loadPlayers();
+
+        session.close();
+
+        return players;
+    }
+
+    public static void initDatastore(){
+        Closeable session;
+        session = ObjectifyService.begin();
+
+        // delete all players and lists
+        OfyService.ofy().delete().entities(OfyService.ofy().load().type(MailList.class).list()).now();
+        OfyService.ofy().delete().entities(OfyService.ofy().load().type(Player.class).list()).now();
+
+
+        // create lists
+        SfgTTApi.createMailList("Herren 1");
+        SfgTTApi.createMailList("Herren 2");
+        SfgTTApi.createMailList("Herren 3");
+        SfgTTApi.createMailList("Abteilungsrat");
+
+        // create Herren 1
+        for(Player p : getHerren1()){
+            SfgTTApi.createPlayer(p.getName(), p.getEmail());
+            SfgTTApi.addPlayerToList("Herren 1", p.getName());
+        }
+
+        for(Player p : getHerren2()){
+            SfgTTApi.createPlayer(p.getName(), p.getEmail());
+            SfgTTApi.addPlayerToList("Herren 2", p.getName());
+        }
+
+        for(Player p : getHerren3()){
+            SfgTTApi.createPlayer(p.getName(), p.getEmail());
+            SfgTTApi.addPlayerToList("Herren 3", p.getName());
+        }
+
+        for(Player p : getAbteilungsrat()){
+            SfgTTApi.createPlayer(p.getName(), p.getEmail());
+            SfgTTApi.addPlayerToList("Abteilungsrat", p.getName());
+        }
+
+        session.close();
+    }
+
+    private static List<Player> getHerren1() {
 
         List<Player> p = new ArrayList<>();
 
-        p.add(Player.builder().name("Christof Schwarz").email("christofschwarz62@gmx.de").build());
-        p.add(Player.builder().name("Tilman Schwarz").email("tilman.schwarz@gmx.de").build());
-        p.add(Player.builder().name("Falk Waidelich").email("falk.waidelich@yahoo.de").build());
-        p.add(Player.builder().name("Alfred Gauss").email("alfred.gauss@t-online.de").build());
-        p.add(Player.builder().name("Ruben Schwarz").email("schwarzruben@gmail.com").build());
-        p.add(Player.builder().name("Reinhold Gehring").email("rgehring@t-online.de").build());
-        p.add(Player.builder().name("Moritz Stumvoll").email("mstumvoll@web.de").build());
+        p.add(new Player("Christof Schwarz", "christofschwarz62@gmx.de"));
+        p.add(new Player("Tilman Schwarz", "tilman.schwarz@gmx.de"));
+        p.add(new Player("Falk Waidelich", "falk.waidelich@yahoo.de"));
+        p.add(new Player("Alfred Gauss", "alfred.gauss@t-online.de"));
+        p.add(new Player("Ruben Schwarz", "schwarzruben@gmail.com"));
+        p.add(new Player("Reinhold Gehring", "rgehring@t-online.de"));
+        p.add(new Player("Moritz Stumvoll", "mstumvoll@web.de"));
 
         return p;
     }
 
-    public static List<Player> getHerren2() {
+    private static List<Player> getHerren2() {
 
         List<Player> p = new ArrayList<>();
 
-        p.add(Player.builder().name("Moritz Stumvoll").email("mstumvoll@web.de").build());
-        p.add(Player.builder().name("Clemens Böttinger").email("clemens-boettinger@arcor.de").build());
-        p.add(Player.builder().name("Meinhard Schwarz").email("meinhard.schwarz@gmx.de").build());
-        p.add(Player.builder().name("Steffen Benesch").email("steffenbenesch@web.de").build());
-        p.add(Player.builder().name("Benjamin Kruppa").email("benjamin_kruppa@gmx.de").build());
-        p.add(Player.builder().name("Klaus Waidelich").email("kwaidelich@t-online.de").build());
-        p.add(Player.builder().name("Gerhard Vetter").email("stefanie.vetter@t-online.de").build());
-        p.add(Player.builder().name("Steffi Vetter").email("stefanie.vetter@t-online.de").build());
-        p.add(Player.builder().name("Simon Klass").email("simon.klass@onlinehome.de").build());
-        p.add(Player.builder().name("Andrea Breitling").email("andrea.breitling@web.de").build());
+        p.add(new Player("Moritz Stumvoll", "mstumvoll@web.de"));
+        p.add(new Player("Clemens Böttinger", "clemens-boettinger@arcor.de"));
+        p.add(new Player("Meinhard Schwarz", "meinhard.schwarz@gmx.de"));
+        p.add(new Player("Steffen Benesch", "steffenbenesch@web.de"));
+        p.add(new Player("Benjamin Kruppa", "benjamin_kruppa@gmx.de"));
+        p.add(new Player("Steffi Vetter", "stefanie.vetter@t-online.de"));
+        p.add(new Player("Simon Klass", "simon.klass@onlinehome.de"));
+        p.add(new Player("Andrea Breitling", "andrea.breitling@web.de"));
 
         return p;
 
     }
 
-    public static List<Player> getHerren3() {
+    private static List<Player> getHerren3() {
         List<Player> p = new ArrayList<>();
 
-        p.add(Player.builder().name("Simon Klass").email("simon.klass@onlinehome.de").build());
-        p.add(Player.builder().name("Thomas Gabel").email("thomas-gabel@gmx.net").build());
-        p.add(Player.builder().name("Klaus Stahl").email("klaus-stahl@gmx.net").build());
-        p.add(Player.builder().name("Manuel Bühler").email("buehler.manuel@yahoo.de").build());
-        p.add(Player.builder().name("Ralf Rentschler").email("ralf.rentschler@gmx.net").build());
-        p.add(Player.builder().name("Jan Reeß").email("jan-reess@t-online.de").build());
-        p.add(Player.builder().name("Reinhard Böttinger").email("r.boettinger@outlook.de").build());
-        p.add(Player.builder().name("Kathrin Szomolay").email("Kathi_Schulze@gmx.de").build());
-        p.add(Player.builder().name("Andre Pilarski").email("apurimac@gmx.de").build());
-        p.add(Player.builder().name("Steffen Bechtold").email("steffen.bechtold@gmx.de").build());
-        p.add(Player.builder().name("Monika Haag").email("haag-monika@t-online.de").build());
-        p.add(Player.builder().name("Daniel Stumvoll").email("dstumvoll@web.de ").build());
-        p.add(Player.builder().name("Lukas Maier").email("lukas.maier8@gmail.com").build());
-        p.add(Player.builder().name("Deborah Schwarz").email("debbyschwarz@gmx.de").build());
-        p.add(Player.builder().name("Florian Gehring").email("floriangehring@gmx.de").build());
-        p.add(Player.builder().name("Timo Koch").email("timo-koch@t-online.de").build());
+        p.add(new Player("Jan Reeß", "jan-reess@t-online.de"));
+        p.add(new Player("Thomas Gabel", "thomas-gabel@gmx.net"));
+        p.add(new Player("Reinhard Böttinger", "r.boettinger@outlook.de"));
+        p.add(new Player("Klaus Stahl", "klaus-stahl@gmx.net"));
+        p.add(new Player("Kathrin Szomolay", "Kathi_Schulze@gmx.de"));
+        p.add(new Player("Andre Pilarski", "andre.pi@posteo.de"));
+        p.add(new Player("Steffen Bechtold", "steffen.bechtold@gmx.de"));
+        p.add(new Player("Daniel Stumvoll", "dstumvoll@web.de "));
+        p.add(new Player("Lukas Maier", "lukas.maier8@gmail.com"));
+        p.add(new Player("Deborah Schwarz", "debbyschwarz@gmx.de"));
+        p.add(new Player("Florian Gehring", "floriangehring@gmx.de"));
+        p.add(new Player("Timo Koch", "timo-koch@t-online.de"));
+        p.add(new Player("Michael Siefke", "mail@michael-siefke.de"));
 
         return p;
     }
 
-    public static List<Player> getAbteilungsrat() {
+    private static List<Player> getAbteilungsrat() {
         List<Player> p = new ArrayList<>();
 
-        p.add(Player.builder().name("Ruben Schwarz").email("schwarzruben@gmail.com").build());
-        p.add(Player.builder().name("Thomas Gabel").email("thomas-gabel@gmx.net").build());
-        p.add(Player.builder().name("Jan Reeß").email("jan-reess@t-online.de").build());
-        p.add(Player.builder().name("Reinhard Böttinger").email("r.boettinger@outlook.de").build());
-        p.add(Player.builder().name("Kathrin Szomolay").email("Kathi_Schulze@gmx.de").build());
-        p.add(Player.builder().name("Christof Schwarz").email("christofschwarz62@gmx.de").build());
-        p.add(Player.builder().name("Tilman Schwarz").email("tilman.schwarz@gmx.de").build());
-        p.add(Player.builder().name("Clemens Böttinger").email("clemens-boettinger@arcor.de").build());
-        p.add(Player.builder().name("Steffi Vetter").email("stefanie.vetter@t-online.de").build());
-        p.add(Player.builder().name("Moritz Stumvoll").email("mstumvoll@web.de").build());
+        p.add(new Player("Thomas Gabel", "thomas-gabel@gmx.net"));
+        p.add(new Player("Jan Reeß", "jan-reess@t-online.de"));
+        p.add(new Player("Kathrin Szomolay", "Kathi_Schulze@gmx.de"));
+        p.add(new Player("Steffi Vetter", "stefanie.vetter@t-online.de"));
+        p.add(new Player("Moritz Stumvoll", "mstumvoll@web.de"));
 
         return p;
     }

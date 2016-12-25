@@ -1,17 +1,17 @@
 (function(){
   'use strict';
 
-  angular.module('app.mail')
-  .controller('MailCtrl', ['$scope', '$resource',  function($scope, $resource){
+  var module = angular.module('app.mail');
+  module.controller('MailCtrl', MailCtrl);
 
-    console.log('hallo mail');
+  MailCtrl.$inject = ['teams'];
 
-    var Mail = $resource('/api/mail');
-    $scope.herren1 = Mail.query({team: 'herren1'});
-    $scope.herren2 = Mail.query({team: 'herren2'});
-    $scope.herren3 = Mail.query({team: 'herren3'});
-    $scope.abteilungsrat = Mail.query({team: 'abteilungsrat'});
+  function MailCtrl(teams){
+    var vm = this;
 
-    console.log($scope.herren1);
-  }]);
+    console.log('teams', teams);
+
+    vm.teams = teams;
+
+  }
 })();

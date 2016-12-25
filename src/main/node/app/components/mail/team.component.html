@@ -1,0 +1,10 @@
+<md-card>
+  <md-card-content layout="column">
+    <h3>{{$ctrl.name}}</h3>
+    <div flex=100 layout="row" ng-repeat="p in $ctrl.players">
+      <div flex=40>{{p.name}}</div>
+      <div></div>
+      <div flex>{{p.email}}</div>
+    </div>
+  </md-card-content>
+</md-card>

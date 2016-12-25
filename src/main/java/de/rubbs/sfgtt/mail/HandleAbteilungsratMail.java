@@ -1,12 +1,9 @@
 package de.rubbs.sfgtt.mail;
 
-import de.rubbs.sfgtt.db.Player;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,23 +21,11 @@ public class HandleAbteilungsratMail extends MailHandlerBase  {
     }
 
     @Override
-    protected boolean processMessage(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, MessagingException {
+    protected boolean processMessage(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, MessagingException, JSONException {
 
         log.info("Mail to Abteilungsrat");
-        ///
-        // send message
-        ///
         MimeMessage rcvMsg = getMessageFromRequest(req);
-        MimeMessage msgToSend = prepareSendMessage(rcvMsg);
-        msgToSend.addRecipient(Message.RecipientType.BCC, new InternetAddress("schwarzruben+abteilungsrat@gmail.com"));
-
-
-        //TODO load players
-        for(Player p : Util.getAbteilungsrat()) {
-            msgToSend.addRecipient(Message.RecipientType.CC, new InternetAddress(p.getEmail()));
-        }
-
-        Transport.send(msgToSend);
+        sendgridSend(rcvMsg, Util.getList("Abteilungsrat"));
         return true;
     }
 }

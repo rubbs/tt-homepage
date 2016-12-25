@@ -1,7 +1,8 @@
 package de.rubbs.sfgtt.mail;
 
 
-import de.rubbs.sfgtt.db.Player;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
+import de.rubbs.sfgtt.db.mail.Player;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.mail.Message;
@@ -26,23 +27,11 @@ public class HandleHerren2Mail extends MailHandlerBase {
     }
 
     @Override
-    protected boolean processMessage(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, MessagingException {
+    protected boolean processMessage(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, MessagingException, JSONException {
 
         log.info("Mail to Herren 2");
-        ///
-        // send message
-        ///
         MimeMessage rcvMsg = getMessageFromRequest(req);
-        MimeMessage msgToSend = prepareSendMessage(rcvMsg);
-        msgToSend.addRecipient(Message.RecipientType.BCC, new InternetAddress("schwarzruben+herren2@gmail.com"));
-
-
-        //TODO load players
-        for(Player p : Util.getHerren2()) {
-            msgToSend.addRecipient(Message.RecipientType.CC, new InternetAddress(p.getEmail()));
-        }
-
-        Transport.send(msgToSend);
+        sendgridSend(rcvMsg, Util.getList("Herren 2"));
         return true;
     }
 

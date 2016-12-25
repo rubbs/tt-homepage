@@ -14,8 +14,8 @@
         <!--<app.id>sfgttgae</app.id>-->
         <!--production-->
         <app.id>sfg-tischtennis</app.id>
-        <app.version>1-java</app.version>
-        <appengine.version>1.9.28</appengine.version>
+        <app.version>3-java</app.version>
+        <appengine.version>1.9.48</appengine.version>
     </properties>
 
     <dependencies>
@@ -23,6 +23,11 @@
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>${appengine.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-endpoints</artifactId>
             <version>${appengine.version}</version>
         </dependency>
         <dependency>
@@ -92,6 +97,42 @@
             <version>3.8.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-testing</artifactId>
+            <version>${appengine.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-stubs</artifactId>
+            <version>${appengine.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.appengine/appengine-api-labs -->
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-labs</artifactId>
+            <version>${appengine.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.9.13.6</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -144,6 +185,13 @@
                         <jvmFlag>-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n</jvmFlag>
                     </jvmFlags>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>endpoints_get_discovery_doc</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

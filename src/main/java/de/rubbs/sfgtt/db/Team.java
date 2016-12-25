@@ -1,14 +1,20 @@
 package de.rubbs.sfgtt.db;
 
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import lombok.Data;
 
 /**
  * Created by ruben on 28.12.15.
  */
 
-@Index
+@Entity
+@Data
 public class Team {
+    @Id
+    public long id;
+    @Index
     private String name;
     private int number;
     private int points;
@@ -32,29 +38,5 @@ public class Team {
             this.number = Integer.parseInt(csvLine[24]);
             this.points = Integer.parseInt(csvLine[26]);
         }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 }
