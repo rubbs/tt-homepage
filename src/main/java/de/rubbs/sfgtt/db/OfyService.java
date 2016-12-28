@@ -14,6 +14,7 @@ public class OfyService {
         ObjectifyService.register(Match.class);
         ObjectifyService.register(MailList.class);
         ObjectifyService.register(Player.class);
+        ObjectifyService.register(SendGridCredentials.class);
     }
 
     public static Objectify ofy() {

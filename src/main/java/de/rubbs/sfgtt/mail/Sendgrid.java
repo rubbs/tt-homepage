@@ -17,6 +17,11 @@ package de.rubbs.sfgtt.mail;
         import com.google.appengine.labs.repackaged.org.json.JSONArray;
         import com.google.appengine.repackaged.org.codehaus.jackson.JsonParseException;
         import com.google.appengine.repackaged.org.codehaus.jackson.map.JsonMappingException;
+        import com.googlecode.objectify.Key;
+        import com.googlecode.objectify.ObjectifyService;
+        import com.googlecode.objectify.util.Closeable;
+        import de.rubbs.sfgtt.db.OfyService;
+        import de.rubbs.sfgtt.db.mail.SendGridCredentials;
 
 
 public class Sendgrid {
@@ -35,23 +40,20 @@ public class Sendgrid {
     private JSONObject header_list = new JSONObject();
 
     protected String domain = "https://sendgrid.com/",
-            endpoint= "api/mail.send.json",
-            username,
-            password;
+            endpoint= "api/mail.send.json";
+    SendGridCredentials creds;
 
     public Sendgrid(){
-        this.username = "rubenschwarz";
-        this.password = "zLO5wUlfbm5EewAe";
-        try {
-            this.setCategory("google_sendgrid_java_lib");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public Sendgrid(String username, String password) {
-        this.username = username;
-        this.password = password;
+        Closeable session;
+        session = ObjectifyService.begin();
+        creds = OfyService.ofy().load().key(Key.create(SendGridCredentials.class, "rubenschwarz")).now();
+        session.close();
+
+        if(creds == null){
+            throw new NullPointerException("sendgrid credentials not found in datastore");
+        }
+
         try {
             this.setCategory("google_sendgrid_java_lib");
         } catch (JSONException e) {
@@ -543,8 +545,8 @@ public class Sendgrid {
     protected Map<String, String> _prepMessageData() throws JSONException {
         Map<String,String> params = new HashMap<String, String>();
 
-        params.put("api_user", this.username);
-        params.put("api_key", this.password);
+        params.put("api_user", this.creds.getUsername());
+        params.put("api_key", this.creds.getPassword());
         params.put("subject", this.getSubject());
         if(this.getHtml() != null) {
             params.put("html", this.getHtml());

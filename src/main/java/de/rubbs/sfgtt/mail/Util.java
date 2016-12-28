@@ -5,6 +5,7 @@ import com.googlecode.objectify.util.Closeable;
 import de.rubbs.sfgtt.db.OfyService;
 import de.rubbs.sfgtt.db.mail.MailList;
 import de.rubbs.sfgtt.db.mail.Player;
+import de.rubbs.sfgtt.db.mail.SendGridCredentials;
 import de.rubbs.sfgtt.mail.api.SfgTTApi;
 import lombok.extern.slf4j.Slf4j;
 
@@ -79,12 +80,12 @@ public class Util {
 
         List<Player> p = new ArrayList<>();
 
+        p.add(new Player("Ruben Schwarz", "schwarzruben@gmail.com"));
         p.add(new Player("Christof Schwarz", "christofschwarz62@gmx.de"));
         p.add(new Player("Tilman Schwarz", "tilman.schwarz@gmx.de"));
         p.add(new Player("Falk Waidelich", "falk.waidelich@yahoo.de"));
         p.add(new Player("Alfred Gauss", "alfred.gauss@t-online.de"));
-        p.add(new Player("Ruben Schwarz", "schwarzruben@gmail.com"));
-        p.add(new Player("Reinhold Gehring", "rgehring@t-online.de"));
+        p.add(new Player("Reinhold Gehring", "regehri@gmx.de"));
         p.add(new Player("Moritz Stumvoll", "mstumvoll@web.de"));
 
         return p;
