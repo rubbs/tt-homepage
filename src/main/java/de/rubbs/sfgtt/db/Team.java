@@ -9,12 +9,8 @@ import lombok.Data;
  * Created by ruben on 28.12.15.
  */
 
-@Entity
 @Data
 public class Team {
-    @Id
-    public long id;
-    @Index
     private String name;
     private int number;
     private int points;

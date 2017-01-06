@@ -3,9 +3,6 @@ package de.rubbs.sfgtt.db;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,8 +17,7 @@ import java.util.TimeZone;
 
 @Entity
 public class Match {
-    @Id
-    private Long id;
+    @com.googlecode.objectify.annotation.Id Long id;
     private Date date;
 
     @Index private Team home;
@@ -35,6 +31,10 @@ public class Match {
     public Match(){}
 
     public Match(String[] csvLine){
+        parse(csvLine);
+    }
+
+    public void parse(String[] csvLine){
         try {
             df.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
             this.date = df.parse(csvLine[0]);
@@ -45,7 +45,6 @@ public class Match {
         this.away = new Team(csvLine, false);
         this.location = csvLine[11] + " " + csvLine[12] + " " + csvLine[13] + " " + csvLine[14];
         this.age = csvLine[5];
-
     }
 
     public String getSummary(){

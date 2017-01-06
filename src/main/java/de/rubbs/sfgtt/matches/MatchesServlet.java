@@ -36,7 +36,7 @@ public class MatchesServlet extends HttpServlet {
 
         String key = req.getParameter("blob-key");
 
-        if(key != null) {
+        if (key != null) {
             BlobKey blobKey = new BlobKey(key);
 
             //TODO parse file
@@ -58,21 +58,20 @@ public class MatchesServlet extends HttpServlet {
             String[] nextLine;
             while ((nextLine = csvReader.readNext()) != null) {
 
-                    Match match = new Match(nextLine);
+                Match match = new Match(nextLine);
+                match.setId(System.currentTimeMillis());
 
-                    //write match to datastore
-                   OfyService.ofy().save().entity(match).now();
-
-
+                //write match to datastore
+                OfyService.ofy().save().entity(match).now();
             }
             //blobstoreService.serve(blobKey, resp);
 
             resp.sendRedirect("/#/spielplan");  // redirect to matches view
-        }
-        else{
+        } else {
             //return list of matches
             List<Match> matches = OfyService.ofy().load().type(Match.class).list();
             ObjectMapper om = new ObjectMapper();
+            resp.setCharacterEncoding("UTF-8");
             resp.getWriter().print(om.writeValueAsString(matches));
         }
 

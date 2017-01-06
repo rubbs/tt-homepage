@@ -11,17 +11,19 @@
 angular.module('app.spielplan')
 .controller('SpielplanCtrl', ['$scope', '$filter', '$timeout', 'spielplan', function ($scope, $filter, $timeout, spielplan) {
   $scope.spielplan = spielplan.query(function(){
-    // for (var m in $scope.spielplan){
-    //   var match = $scope.spielplan[m];
-    //   console.log(match);
+ //   for (var m in $scope.spielplan){
+   //    var match = $scope.spielplan[m];
+     // if(match.away.name.indexOf('TTG') >= 0)
+      // console.log(match);
     //   // match.begin = new Date(match.date);
     //   // match.end = new Date(match.date);
     //   // match.end.setHours(match.end.getHours() + 3);
-    // }
+    //}
   });
 
   $scope.matchClass = function(match){
-    console.log(match);
+
+    //console.log(match);
     if(match.date < Date.now()){
       return 'gray';
     }
@@ -140,7 +142,7 @@ angular.module('app.spielplan')
       console.log(JSON.stringify($scope.filename));
 
       spielplan.get({init: true}, function(success){
-        console.log(success);
+        console.log('!!',success);
 
 
         var formData = new FormData();
